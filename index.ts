@@ -15,11 +15,12 @@ const HYPHEN = '-';
 const title = 'Rapid Application Development Patterns';
 
 const removeSpace = (s) => s.split(SPACE).join(EMPTY);
-const replaceSpace = (s, sub) => s.split(SPACE).join(sub); 
+const replaceSpace = (s, sub) => s.split(SPACE).join(sub);
+const replace = (s, targ, sub) => s.split(targ).join(sub);
 
-const pascalCase = 'Pending...';
-const snakeCase = 'Pending...';
-const kebabCase = 'Pending...';
+const pascalCase = removeSpace(title);
+const snakeCase = replaceSpace(title, UNDERSCORE);
+const kebabCase = replace(snakeCase, UNDERSCORE, HYPHEN);
 
 // How can we remove spaces in a string?
 // How can we replace spaces with a
@@ -42,13 +43,17 @@ const ledger = [
   { func: subtract, params: { a: 6, b: 5 } },
 ];
 
-const result = '';
+const execute = (action) => action.func(action.params);
+const result = execute(transaction);
 
 let output = '';
+ledger.forEach((action) => (output += `\nOUTPUT: ${execute(action)}`));
 
-const mappedOutput = [];
+const mappedOutput = ledger.map((action) => execute(action));
 
-const reducedOutput = '';
+const reducedOutput = ledger.reduce((output, action) => {
+  return (output += execute(action));
+}, 0);
 
 // How can we execute a single action?
 // How can we execute an array of actions?
